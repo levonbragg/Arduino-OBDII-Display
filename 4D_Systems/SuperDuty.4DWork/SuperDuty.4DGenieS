@@ -1,0 +1,659 @@
+#platform "uLCD-32PTU"
+
+// generated 11/30/2014 12:52:00 AM
+
+#MODE RUNFLASH
+
+#inherit "4DGL_16bitColours.fnc"
+
+#inherit "VisualConst.inc"
+
+
+#inherit "SuperDutyConst.inc"
+
+#inherit "CLPrintStrings.inc"
+
+#constant IPDatasize 22
+
+#CONST
+    CMDLenMAX   80
+#END
+
+#CONST
+    BGIMAGE     0x0020
+    ACK         0x06
+    NAK         0x15
+    ReadCmd     0x80
+    WriteCmd    0x00
+//  IPD_TYPE    0 // offsets are doubled as FLASH is byte addressable
+    IPD_P1      2
+    IPD_P2      4
+    IPD_P3      6
+    IPD_P4      8
+    IPD_P5      10
+    IPD_P6      12
+    IPD_P7      14
+    IPD_DOWN    16
+    IPD_RELEASE 18
+    IPD_OBJVidx 20
+// object indexes
+    tDipSwitch      0
+    tKnob           1
+    tRockerSwitch   2
+    tRotarySwitch   3
+    tGSlider        4
+    tTrackbar       5
+    tWinButton      6
+    tAngularmeter   7   // need to implement use of this, inputs must be ordered first
+    tCoolgauge      8
+    tCustomdigits   9
+    tForm           10
+    tGauge          11
+    tImage          12
+    tKeyboard       13  // this is a special input, does not need to be at front
+    tLed            14
+    tLeddigits      15
+    tMeter          16
+    tStrings        17  // also need output strings code
+//    tStringUNI      0x3f | 0x40
+//    tStringANSII    0x3f
+    tThermometer    18
+    tUserled        19
+    tVideo          20
+    tStaticText     21
+// Remove, check for non visual objects instead
+//    MaxVisObjects   21  // objects that have a visual component 
+    tSounds         22
+    tTimer          23
+    tSpectrum       24
+    tScope          25
+    tTank           26
+    tUserImages     27
+    tPinOutput      28
+    tPinInput       29 
+    t4Dbutton       30    // more inputs 
+    tAniButton      31
+    tColorPicker    32 
+    tUserButton     33     
+// tGradient, tBorder, tScale are not real objects, generated totally within Workshop
+    MaxTotObjects   33 // objects in objects array
+//    OT_DISPLAY      22
+    OT_REPORT       100
+    OT_SETCONST     101
+    OT_SETANOTHER   102
+    OT_ACTIVATE     103
+    OT_NEXTFRAME    104
+    OT_PREVFRAME    105
+    OT_NEXTSTRING   106
+    OT_PREVSTRING   107
+// other OT_s Form activate,
+// Indexes into LedDigits and CustomDigits arrays
+    ileft           0
+    iDigits         2
+    iMinDigits      4
+    iWidthDigit     6
+    iLeadingBlanks  8
+// indexes to Strings arrays
+    STStartH        0
+    STStartL        2
+    STSize          4
+    STx1            6
+    STy1            8
+    STx2            10
+    STy2            12
+    STFGColor       14
+    STBGColor       16
+    STFontAttribs   18
+    STTransparent   20 // bit transparent should 'refresh' background, otherwise rectangle out
+    STAnsi          22 // bit defines write/draw routine
+    STForm          24 // form this string can be seen in
+// Command codes
+    READ_OBJ        0
+    WRITE_OBJ       1
+    WRITE_STR       2
+    WRITE_STRU      3
+    WRITE_CONTRAST  4
+    REPORT_OBJ      5
+    REPORT_EVENT    7
+// End P1.inc
+    nObjects        14
+    nInputs         1
+    ANITIMERS       0
+#END
+
+#DATA
+    word formstidx 0, 0
+    word formenidx 0, 14
+    word IPControls 0
+    word IPData tPinInput, 0, -1, -1, -1, -1, -1, -1, 0, 0, 2
+    word iStrings0  Strings0StartH, Strings0StartL, Strings0Size, 0, 20, 96, 60, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings1  Strings1StartH, Strings1StartL, Strings1Size, 0, 79, 96, 120, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings2  Strings2StartH, Strings2StartL, Strings2Size, 0, 139, 96, 180, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings3  Strings3StartH, Strings3StartL, Strings3Size, 0, 198, 96, 239, GREEN, BLACK, 0, 1, 1, 1 
+
+    word iStrings5  Strings5StartH, Strings5StartL, Strings5Size, 116, 140, 212, 180, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings6  Strings6StartH, Strings6StartL, Strings6Size, 116, 199, 212, 239, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings7  Strings7StartH, Strings7StartL, Strings7Size, 223, 20, 319, 60, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings8  Strings8StartH, Strings8StartL, Strings8Size, 223, 80, 319, 120, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings9  Strings9StartH, Strings9StartL, Strings9Size, 223, 140, 319, 180, GREEN, BLACK, 0, 1, 1, 1 
+    word iStrings10  Strings10StartH, Strings10StartL, Strings10Size, 223, 199, 319, 239, GREEN, BLACK, 0, 1, 1, 1 
+    word oDipSwitchs 0
+    word oKnobs 0
+    word oRockerSwitchs 0
+    word oRotarySwitchs 0
+    word oGSliders 0
+    word oTrackbars 0
+    word oWinButtons 0
+    word oAngularmeters 0
+    word oCoolgauges 0
+    word oCustomdigitss 0
+    word oForms 2, -1, -1
+    word oGauges 1, iGauge0
+    word oImages 0
+    word oKeyboards 0
+    word oLeds 0
+    word oLeddigitss 0
+    word oMeters 0
+    word oStringss 11, iStrings0, iStrings1, iStrings2, iStrings3, -1, iStrings5, iStrings6, iStrings7, iStrings8, iStrings9, iStrings10
+    word oThermometers 0
+    word oUserleds 1, iUserled0
+    word oVideos 0
+    word oStaticTexts 12, iStatictext0, iStatictext1, iStatictext2, iStatictext3, iStatictext4, iStatictext5, iStatictext6, iStatictext7, iStatictext8, iStatictext9, iStatictext10, iStatictext11
+    word oSpectrums 0
+    word oScopes 0
+    word oTanks 0
+    word oUserImagess 0
+    word oPinInputs 1, 0
+    word o4Dbuttons 0
+    word oAniButtons 0
+    word oColorPickers 0
+    word oUserButtons 0
+    word oTimers 0
+    word oSoundss 0
+    word oPinOutputs 0
+    word formBGcol BGIMAGE, 0x0000
+    word kKeyboardKeystrokes -1
+    word InpPin IO1_PIN
+    word InpPinIdle 0
+    word OutPin IO1_PIN, IO1_PIN
+    word OutPinPulse 10, 10
+    word OutPinIdle 0, 0
+#END
+
+var TimerPulse ;
+var hFonts[11] ;
+var stringsCV[11] := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], hstrings ;
+#constant InpPinCnt 1
+var InpPinStat[1] := [0] ; 
+#constant OutPinCnt 2
+var OutPinTime[2] ;
+// Start P2.inc
+var oObjects[MaxTotObjects+1] ;                 // address of objects
+var curform ;
+var x, y ;
+var inputtype, TState, input, object ;
+var comRX[40], cmd[CMDLenMAX] ;
+
+var cs, Ocs ;
+
+func seroutCS(var op)
+    serout(op) ;
+    Ocs ^= op ;
+endfunc
+
+func seroutOcs()
+    serout(Ocs) ;
+    Ocs := 0 ;
+endfunc
+
+
+func ReadObject(var ObjectType, var ObjectIdx)
+    var j, k, Objects ;
+    Objects := *(oObjects+ObjectType) ;
+
+    seroutCS(REPORT_OBJ) ;
+    seroutCS(ObjectType) ;
+    seroutCS(ObjectIdx) ;
+    j := 2 + ObjectIdx * 2 + Objects ;
+     if (ObjectType == tForm)
+        k := curform ;
+    else if (ObjectType == tPinOutput)
+        k := pin_Read(OutPin[ObjectIdx]) ^ OutPinIdle[ObjectIdx] ;
+    else if (ObjectType == tPinInput)
+        k := InpPinStat[ObjectIdx] ^ InpPinIdle[ObjectIdx] ;
+    else if (ObjectType == tStrings)
+        k := stringsCV[ObjectIdx];
+        else
+        k := img_GetWord(hndl, *j, IMAGE_INDEX);
+    endif
+    seroutCS(k >> 8) ; // first 8 bits
+    seroutCS(k) ;
+    seroutOcs() ;
+endfunc
+
+
+func WriteObject(var ObjectType, var ObjectIdx, var NewVal)
+    var i, j, k, Objects ;
+    ObjectType &= 0x3f ;
+    if (ObjectType == tForm)
+        if ((object != -1) || (NewVal == 1))                                   // ensure form only activated on pin Idle->Active transition
+        ActivateForm(ObjectIdx) ;
+        endif
+    else if (ObjectType == tPinOutput)
+        if ((NewVal) || (OutPinPulse[ObjectIdx])) NewVal := 1 ;                 // ensure 0(off) or 1(on), always on for pulsed
+        if ((NewVal ^ OutPinIdle[ObjectIdx]))
+            pin_HI(OutPin[ObjectIdx]) ;
+        else
+            pin_LO(OutPin[ObjectIdx]) ;
+        endif
+        if (OutPinPulse[ObjectIdx])                                             // if pulsed
+            sys_EventsPostpone() ;                                              // don't want timer tripping during this
+            TimerPulse -= sys_GetTimer(TIMER0) ;                                // see how much has elapsed since last event
+            OutPinTime[ObjectIdx] := TimerPulse + OutPinPulse[ObjectIdx] ;      // add it into new time
+            PinPopTimer() ;                                                     // and do a pretend pop to adjust and reset timer
+        endif
+    else
+        Objects := *(oObjects+ObjectType)+ObjectIdx*2+2 ;
+        i := *(Objects) ;
+         if (ObjectType == tStrings)
+            PrintStrings(ObjectIdx, NewVal, 0);
+        else
+            img_SetWord(hndl, i , IMAGE_INDEX, NewVal); // where state is 0 to 2
+            img_Show(hndl, i) ; // will only display if form is current
+        endif
+    endif
+endfunc
+
+
+
+
+
+func ActivateForm(var newform)
+    var i, j, *p ;
+    if (curform != -1) // deactivate old form, by disabling all inputs
+        for (i := formstidx[curform]; i <= formenidx[curform]; i++)
+            if (img_GetWord(hndl, i, IMAGE_TAG))
+                img_Disable(hndl,i) ;
+            endif
+        next
+    endif
+    curform := newform ;
+    // display newform image or clear to image color
+    if (formBGcol[curform] != BGIMAGE)
+        gfx_Set(BACKGROUND_COLOUR,formBGcol[curform]);
+        gfx_Cls() ;
+        DoGFXObjects() ;                                    // display GFX 'widgets'
+    endif
+
+    // enable inputs
+    for (i := formstidx[curform]; i < formenidx[curform]; i++)
+        j := img_GetWord(hndl, i, IMAGE_TAG) ;
+        if (j)
+            j-- ;
+            img_SetAttributes(hndl, i, I_STAYONTOP+I_ENABLED);        // make sure this is on top of form, if applicable
+            //if (j != tKeyboard)
+            if ((j <= tWinButton) || (j >= t4Dbutton) )               // enable inputs
+                img_ClearAttributes(hndl, i, I_TOUCH_DISABLE);        // ensure touch is enabled
+            endif
+            img_Show(hndl,i) ; // show initialy, if required
+            if (j == tForm)
+                DoGFXObjects() ;                                    // display GFX 'widgets' for image backgruobds
+            endif
+        endif
+    next
+    for (i := 0; i < oStringss[0]; i++)
+        if (stringsCV[i] != -1)
+            WriteObject(tStrings, i, stringsCV[i]) ;
+        endif
+    next
+endfunc
+
+func UpdateObjects(var newval)
+    var IPidx, otherOBJ ;
+    if (object == -1) goto PinInputEntry ;
+    if ( ( img_GetWord(hndl, *(object), IMAGE_INDEX) != newval) || (TState == IPD_RELEASE) ) // only bother if values changed, or release
+
+        img_SetWord(hndl, *(object), IMAGE_INDEX, newval);
+            img_Show(hndl, *(object));      // only shows on current form
+PinInputEntry:
+        IPidx := *(input+TState) ;
+        while(IPidx != 0)
+            otherOBJ := IPidx + IPData;
+            if (*(otherOBJ) == OT_REPORT)
+                seroutCS(REPORT_EVENT) ;
+                seroutCS(inputtype) ;
+                seroutCS(*(otherOBJ+IPD_OBJVidx)) ;
+                seroutCS(newval >> 8) ;
+                seroutCS(newval) ;
+                seroutOcs() ;
+            else if (TState == *(otherOBJ+IPD_P4))
+                if (*(otherOBJ) == OT_ACTIVATE)
+                    ActivateForm(*(otherOBJ+IPD_P2) ) ;
+                    inputtype := tForm ;
+                else if (*(otherOBJ) == OT_SETCONST)
+                    newval := *(otherOBJ+IPD_P3) ;
+                    WriteObject(*(otherOBJ+IPD_P1), *(otherOBJ+IPD_P2), newval) ;
+                else if (*(otherOBJ) == OT_SETANOTHER)
+                    WriteObject(*(otherOBJ+IPD_P1), *(otherOBJ+IPD_P2), newval) ;
+                else if (*(otherOBJ) == OT_PREVFRAME)
+                    if (img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX))
+                        WriteObject(*(otherOBJ+IPD_P5),*(otherOBJ+IPD_P2),img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX)-1) ;
+                    endif
+                    newval := img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX) ;
+                else if (*(otherOBJ) == OT_NEXTFRAME)
+                    if (img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX) < *(otherOBJ+IPD_P3)) 
+                        WriteObject(*(otherOBJ+IPD_P5),*(otherOBJ+IPD_P2),img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX)+1) ;
+                    endif
+                    newval := img_GetWord(hndl, *(otherOBJ+IPD_P6), IMAGE_INDEX) ;
+                else if (*(otherOBJ) == OT_PREVSTRING)
+                    if (stringsCV[*(otherOBJ+IPD_P2)])
+                        WriteObject(tStrings,*(otherOBJ+IPD_P2),stringsCV[*(otherOBJ+IPD_P2)]-1) ;
+                    endif
+                else if (*(otherOBJ) == OT_NEXTSTRING)
+                    if (stringsCV[*(otherOBJ+IPD_P2)] < *(otherOBJ+IPD_P3)) // fix IPD_P2 not filled in yet
+                        WriteObject(tStrings,*(otherOBJ+IPD_P2),stringsCV[*(otherOBJ+IPD_P2)]+1) ;
+                    endif
+                endif
+            endif
+            IPidx := *(otherOBJ+TState) ;
+        wend
+    endif
+endfunc
+
+// End P2.inc
+func DoGFXObjects()
+endfunc
+
+// Start P3.inc
+func PinPopTimer()                      // check for need to pop a timer and determine interval before next pop
+#constant MAXTP 32700
+    var i, newtp ;
+    newtp := MAXTP ;
+    for (i :=0 ; i < OutPinCnt ; i++)
+        if (OutPinTime[i])
+            OutPinTime[i] -= TimerPulse ;
+            if (OutPinTime[i])
+                newtp := MIN(newtp,OutPinTime[i]) ;
+            else
+                if (OutPinIdle[i])
+                    pin_HI(OutPin[i]) ;
+                else
+                    pin_LO(OutPin[i]) ;
+                endif
+            endif
+        endif
+    next
+    if (newtp != MAXTP)
+        TimerPulse := newtp ;
+        sys_SetTimer(TIMER7, TimerPulse) ;
+    endif
+endfunc
+
+func main()
+    var comTX[50], cmdi, i, j, n, state, oldn ;
+    putstr("Mounting...\n");
+    if (!(disk:=file_Mount()))
+        while(!(disk :=file_Mount()))
+            putstr("Drive not mounted...");
+            pause(200);
+            gfx_Cls();
+            pause(200);
+        wend
+    endif
+//    gfx_MoveTo(0, 0);
+//    print(mem_Heap()," ") ;
+//    gfx_TransparentColour(0x0020);
+//    gfx_Transparency(ON);
+
+    gfx_ScreenMode(LANDSCAPE) ;
+
+    for (i := 0; i < OutPinCnt; i++)
+        if (OutPinIdle[i])
+            pin_HI(OutPin[i]) ;
+        else
+            pin_LO(OutPin[i]) ;
+        endif
+        pin_Set(OUTPUT, OutPin[i]) ;
+    next 
+    sys_SetTimerEvent(TIMER7,PinPopTimer);
+    // open image control
+    hndl := file_LoadImageControl("SUPERD~1.dat", "SUPERD~1.gci", 1);
+
+    // init 'constants'
+// End P3.inc
+
+    oObjects[tDipSwitch] := oDipSwitchs ;
+    oObjects[tKnob] := oKnobs ;
+    oObjects[tRockerSwitch] := oRockerSwitchs ;
+    oObjects[tRotarySwitch] := oRotarySwitchs ;
+    oObjects[tGSlider] := oGSliders ;
+    oObjects[tTrackbar] := oTrackbars ;
+    oObjects[tWinButton] := oWinButtons ;
+    oObjects[tAngularmeter] := oAngularmeters ;
+    oObjects[tCoolgauge] := oCoolgauges ;
+    oObjects[tCustomdigits] := oCustomdigitss ;
+    oObjects[tForm] := oForms ;
+    oObjects[tGauge] := oGauges ;
+    oObjects[tImage] := oImages ;
+    oObjects[tKeyboard] := oKeyboards ;
+    oObjects[tLed] := oLeds ;
+    oObjects[tLeddigits] := oLeddigitss ;
+    oObjects[tMeter] := oMeters ;
+    oObjects[tStrings] := oStringss ;
+    oObjects[tThermometer] := oThermometers ;
+    oObjects[tUserled] := oUserleds ;
+    oObjects[tVideo] := oVideos ;
+    oObjects[tStaticText] := oStaticTexts ;
+    oObjects[tSounds] := oSoundss ;
+    oObjects[tTimer] := oTimers ;
+    oObjects[tSpectrum] := oSpectrums ;
+    oObjects[tTank] := oTanks ;
+    oObjects[tUserImages] := oUserImagess ;
+    oObjects[tPinOutput] := oPinOutputs ;
+    oObjects[tPinInput] := oPinInputs ;
+    oObjects[t4Dbutton] := o4Dbuttons ;
+    oObjects[tAniButton] := oAniButtons ;
+    oObjects[tColorPicker] := oColorPickers ;
+    oObjects[tUserButton] := oUserButtons ;
+    hFonts[0] := file_LoadImageControl("SUPERD~1.da1", "SUPERD~1.gc1", 1)  ;
+    hFonts[1] := hFonts[0] ;
+    hFonts[2] := hFonts[0] ;
+    hFonts[3] := hFonts[0] ;
+    hFonts[5] := hFonts[0] ;
+    hFonts[6] := hFonts[0] ;
+    hFonts[7] := hFonts[0] ;
+    hFonts[8] := hFonts[0] ;
+    hFonts[9] := hFonts[0] ;
+    hFonts[10] := hFonts[0] ;
+// Start P4.inc
+    hstrings := file_Open("SUPERD~1.txf", 'r') ; // Open handle to access uSD strings, uncomment if required
+    // init comms
+    com_Init(comRX,CMDLenMAX,0);
+    com_SetBaud(COM0,11520);
+    com_TXbuffer(comTX, 100, 0);
+    // tag 'real' objects
+    for (i := 0; i <= MaxTotObjects; i++)
+        if (   (i != tSounds)
+            && (i != tTimer)
+            && (i != tPinOutput)
+            && (i != tPinInput) )
+            x := oObjects[i] ;
+            y := *(x) ;
+            for (n := 1; n <= y; n++)
+                oldn := *(x+n*2) ;
+                img_SetAttributes(hndl, oldn, I_TOUCH_DISABLE);  // ensure touch is enabled
+                if (oldn != -1)
+                    img_SetWord(hndl, oldn, IMAGE_TAG, i+1);
+                    img_Disable(hndl, oldn) ;
+                endif
+            next
+        endif
+    next
+
+    // display initial form
+    curform := -1 ;
+    ActivateForm(1) ; // need to change this according to first actual form
+// End P4.inc
+// Start P5.inc
+    touch_Set(TOUCH_ENABLE);                            // enable the touch screen
+    oldn := -1 ;
+    repeat
+        // check comms for command, how to NAK invalid command
+        if (com_Count() != 0)
+            i := serin() ;
+            cs ^= i ;               // update checksum
+            if (   (cmdi > 2)
+                && (cmd[0] == WRITE_STRU) )
+                j := (cmdi-1) >> 1 + 2 ;
+                if (j == CMDLenMAX)    // max length exceeded
+                    serout(NAK) ;
+                    cs := 0 ;
+                    cmdi := -1 ;
+                else if (cmdi & 1)
+                    cmd[j] := i ;
+                    if (cmd[2] == 0)    // if string complete
+                        if (cs)
+                            serout(NAK) ;
+                            cs := 0 ;
+                        else
+                            cmd[j] := 0 ;                     // terminate it
+                            PrintStrings(cmd[1], &cmd[3], 1) ;
+                            serout(ACK) ;
+                        endif
+                        cmdi := -1 ;
+                    endif
+                else
+                    cmd[j] := cmd[j] << 8 + i ;
+                    cmd[2]-- ;          // dec length
+                endif
+                cmdi++ ;
+            else // not unicode string
+                cmd[cmdi++] := i ;
+                 if (cmd[0] == WRITE_STR)        // ansi string
+                    if (cmdi == CMDLenMAX)      // max length exceeded
+                        serout(NAK) ;
+                        cs := 0 ;
+                        cmdi := 0 ;
+                    else if (cmdi > 2)
+                        if (cmd[2] == -1)
+                            if (cs)
+                                serout(NAK) ;
+                                cs := 0 ;
+                            else
+                                cmd[cmdi-1] := 0 ;                     // terminate it
+                                PrintStrings(cmd[1], &cmd[3], 1) ;
+                                serout(ACK) ;
+                            endif
+                            cmdi := 0 ;
+                        else
+                            cmd[2]-- ;          // dec length
+                        endif
+                    endif
+                else if (   (cmd[0] == READ_OBJ)
+                         && (cmdi == 4)         )
+                    if (cs)
+                        serout(NAK) ;
+                        cs := 0 ;
+                    else
+                        ReadObject(cmd[1], cmd[2]) ;
+                    endif
+                    cmdi := 0 ;
+                else if (   (cmd[0] == WRITE_OBJ)    // 6 byte write command (gen option)
+                         && (cmdi == 6)          )
+                    if (cs)
+                        serout(NAK) ;
+                        cs := 0 ;
+                    else
+                        WriteObject(cmd[1], cmd[2], cmd[3] << 8 + cmd[4]) ;
+                        serout(ACK) ;
+                    endif
+                    cmdi := 0 ;
+                else if (   (cmd[0] == WRITE_CONTRAST)
+                         && (cmdi == 3)         )
+                    if (cs)
+                        serout(NAK) ;
+                        cs := 0 ;
+                    else
+                        gfx_Contrast(cmd[1]) ;
+                        serout(ACK) ;
+                    endif
+                    cmdi := 0 ;
+                else if (cmdi == 6)    // we have 6 bytes and we've gotten here -> something wrong
+                    serout(NAK) ;
+                    cs := 0 ;
+                    cmdi := 0 ;
+                endif
+            endif   // not unicode string
+        endif   // a character is available
+
+        // check input pins for changes
+        for (i := 0 ; i < InpPinCnt; i++)
+            if ((j := pin_Read(InpPin[i])) != InpPinStat[i])  // changed state
+                InpPinStat[i] := j ;
+                input := oPinInputs[i+1] + IPData;
+                TState := IPD_RELEASE ;
+                object := -1 ;
+                inputtype := tPinInput ;
+                UpdateObjects(j ^ InpPinIdle[i]) ; // to action operations
+                object := 0 ;
+            endif
+        next
+
+    // touch code processing
+
+        state := touch_Get(TOUCH_STATUS);               // get touchscreen status
+        n := img_Touched(hndl,-1) ;
+        if ((state == TOUCH_PRESSED) || (state == TOUCH_RELEASED) || (state == TOUCH_MOVING))
+            if ((state != TOUCH_RELEASED) && (n != oldn) && (oldn != -1)) 
+                state := TOUCH_RELEASED ;       // simulate release if we move off object
+            endif
+            if (state != TOUCH_RELEASED)        // if not released
+                if (oldn != -1) 
+                    n := oldn ;
+                else 
+                    oldn := n ;
+                    state := TOUCH_PRESSED ;
+                endif
+                x  := touch_Get(TOUCH_GETX);
+                y  := touch_Get(TOUCH_GETY);
+                TState := IPD_DOWN ;
+            else
+                n := oldn ;                     // simulate release of what we touched
+                oldn := -1 ;                    // prevent double release
+                TState := IPD_RELEASE ;
+            endif
+            if (n != -1)
+                        input := IPControls[n] + IPData;
+                        inputtype := *(input) ;
+                        i := inputtype ;
+                        if (inputtype >= t4Dbutton) i -= 23 ; // adjust to ensure next in gosub
+                        gosub (i), (cDipswitch, cKnob, cRockerswitch, cRotaryswitch, cSlider, cTrackbar, cWinbutton, c4DButton, cAniButton, cColorPicker, cUserButton) ;
+            endif
+        endif
+ //       if ((n != -1) && (oldn == -1)) oldn := n ;    // save what we touched in case we move off it
+
+        sys_EventsResume() ;
+    forever
+
+cDipswitch:
+
+cKnob:
+
+cRockerswitch:
+
+cRotaryswitch:
+
+cSlider:
+cTrackbar:
+
+c4DButton:
+cUserButton:
+cWinbutton:
+gbutton:
+
+cAniButton:
+
+cColorPicker:
+
+endfunc
+// End P5.inc

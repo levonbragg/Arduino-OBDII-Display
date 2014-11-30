@@ -1,0 +1,14 @@
+"Statictext0" 0000 0000 00 04
+"Statictext1" 0E00 0000 00 40
+"Statictext2" 2000 0000 00 7C
+"Statictext3" 2E00 0000 00 B8
+"Statictext4" 3C00 0000 78 04
+"Statictext5" 4A00 0000 78 40
+"Statictext6" 5800 0000 78 7C
+"Statictext7" 6600 0000 78 B8
+"Statictext8" 7600 0000 FE 04
+"Statictext9" 8000 0000 FE 40
+"Statictext10" 8E00 0000 FE 7C
+"Statictext11" 9C00 0000 FE B8
+"Userled0" AA00 0000 7C 18
+"Gauge0" DA00 0000 7C 54

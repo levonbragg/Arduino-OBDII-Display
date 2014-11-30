@@ -1,0 +1,10 @@
+linked : 10    main 024E
+linked : 9     PinPopTimer 0918
+linked : 8     DoGFXObjects 09B3
+linked : 7     UpdateObjects 09B4
+linked : 6     ActivateForm 0BF3
+linked : 5     WriteObject 0D3A
+linked : 4     ReadObject 0E3C
+linked : 3     seroutOcs 0F00
+linked : 2     seroutCS 0F0F
+linked : 1     PrintStrings 0F21
