@@ -10,10 +10,9 @@
 * (Do what you want with the code, but if we ever meet then you buy me a beer)
 *
 * This sketch will grab Exhaust Gas Temps, DFP Status, Regen Status, Engine Coolant,
-* and Engine Oil Temp data from a vehicle with an OBD port  using the OBD-II-UART 
+* and Engine Oil Temp data from a vehicle with an OBD port using the OBD-II-UART 
 * board from SparkFun electronics. The data will be displayed
-* on a serial 16x2 LCD. See the tutorial at https://www.sparkfun.com/tutorials/294
-* to learn how to hook up the hardware:
+* on a serial 4D Systems Display. 
 *
 */
 
