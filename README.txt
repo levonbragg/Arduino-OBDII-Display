@@ -27,6 +27,8 @@ I used this board kit:
 http://www.4dsystems.com.au/product/uLCD_35DT_AR/
 I purchased it from Mouser. It was about $10 cheaper.
 
+You will also need the Arduino Libraryfrom 4D Systems:
+https://github.com/4dsystems/ViSi-Genie-Arduino-Library
 
 Future ToDo:
 1. Drop the Arduino Mega and shield and use a Custom Teensey 3.1 or Program the Display directly...
